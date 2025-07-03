@@ -53,8 +53,8 @@ const FavouriteManager = () => {
 
     const filtered = favourites.filter(
         (f) =>
-            f.userId.toLowerCase().includes(search.toLowerCase()) ||
-            f.spotId.toLowerCase().includes(search.toLowerCase())
+            f.userId.includes(search) ||
+            f.spotId.includes(search)
     );
 
     return (
