@@ -159,12 +159,15 @@ const SpotManager = () => {
                     <tr>
                         <th>#</th>
                         <th>Name</th>
+                        <th>Province ID</th>
                         <th>Region</th>
                         <th>Type</th>
                         <th>Favorite</th>
                         <th>Images</th>
                         <th>Region Group</th>
                         <th>Region Code</th>
+                        <th>Location</th>
+                        <th>Category ID</th>
                         <th>Description</th>
                         <th>Actions</th>
                     </tr>
@@ -174,6 +177,7 @@ const SpotManager = () => {
                         <tr key={s._id}>
                             <td>{i + 1}</td>
                             <td>{s.name}</td>
+                            <td>{s.provinceId}</td>
                             <td>{s.region}</td>
                             <td>{s.type}</td>
                             <td>{s.isFavorite ? "Yes" : "No"}</td>
@@ -198,6 +202,12 @@ const SpotManager = () => {
                             </td>
                             <td>{s.regionGroup}</td>
                             <td>{s.regionCode}</td>
+                            <td>
+                                {s.location && typeof s.location === "object"
+                                    ? `${s.location.lat}, ${s.location.lng}`
+                                    : "N/A"}
+                            </td>
+                            <td>{s.categoryId}</td>
                             <td>{s.description}</td>
                             <td>
                                 <Button variant="outline-info" size="sm" onClick={() => handleEdit(s)}><FaEdit /></Button>{" "}

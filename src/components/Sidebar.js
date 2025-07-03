@@ -1,4 +1,3 @@
-import React from "react";
 import {
     FaTachometerAlt,
     FaThLarge,
@@ -9,7 +8,8 @@ import {
     FaCube,
     FaSignInAlt,
     FaStar,
-    FaLightbulb
+    FaLightbulb,
+    FaHeart
 } from "react-icons/fa";
 
 const Sidebar = ({ onSelect, active }) => {
@@ -84,6 +84,14 @@ const Sidebar = ({ onSelect, active }) => {
                 >
                     <FaLightbulb className="me-2" style={{ color: "#00bcd4" }} />
                     Suggest
+                </li>
+                <li
+                    className={`d-flex align-items-center p-2 rounded ${active === "favourite" ? "bg-light text-primary fw-bold" : "text-dark"}`}
+                    onClick={() => onSelect("favourite")}
+                    role="button"
+                >
+                    <FaHeart className="me-2 text-danger" />
+                    Favourite
                 </li>
                 <li
                     className={`d-flex align-items-center p-2 rounded ${active === "user" ? "bg-light text-primary fw-bold" : "text-dark"}`}

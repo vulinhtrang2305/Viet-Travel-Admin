@@ -5,6 +5,7 @@ import SpotManager from "../module/SpotManager";
 import ReviewManager from "../module/ReviewManager";
 import SuggestManager from "../module/SuggestManager";
 import CategoryManager from "../module/CategoryManager";
+import FavouriteManager from "../module/FavouriteManager";
 
 const AdminDashboard = () => {
     const [section, setSection] = useState("category");
@@ -21,6 +22,8 @@ const AdminDashboard = () => {
                 return <ReviewManager />;
             case "suggest":
                 return <SuggestManager />;
+            case "favourite":
+                return <FavouriteManager />;
             // case "user":
             //     return <UserManager />;
             default:
