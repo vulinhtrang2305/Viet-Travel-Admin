@@ -220,6 +220,38 @@ function AppProvider({ children }) {
   };
 
 
+  // ---------------------- FAVOURITE ----------------------
+  const [favourites, setFavourites] = useState([]);
+
+  const fetchFavourites = async () => {
+    const res = await axios.get("http://localhost:9999/favourites");
+    setFavourites(res.data.data);
+  };
+
+  const fetchFavouritesByUser = async (userId) => {
+    const res = await axios.get(`http://localhost:9999/favourites/${userId}`);
+    return res.data;
+  };
+
+  const addToFavourite = async (data) => {
+    const res = await axios.post("http://localhost:9999/favourites/add", data);
+    fetchFavourites();
+    return res.data;
+  };
+
+  const deleteFavourite = async (userId, spotId) => {
+    await axios.delete(`http://localhost:9999/favourites/${userId}/${spotId}`);
+    fetchFavourites();
+  };
+
+  const favourite = {
+    favourites,
+    fetchFavourites,
+    fetchFavouritesByUser,
+    addToFavourite,
+    deleteFavourite
+  };
+
   // ---------------------- CONTEXT PROVIDER ----------------------
   return (
     <AppContext.Provider
@@ -230,7 +262,8 @@ function AppProvider({ children }) {
         spot,
         review,
         suggest,
-        userFind 
+        userFind,
+        favourite 
       }}
     >
       {children}
