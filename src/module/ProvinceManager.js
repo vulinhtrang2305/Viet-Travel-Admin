@@ -120,6 +120,8 @@ const ProvinceManager = () => {
                     <tr>
                         <th>#</th>
                         <th>Name</th>
+                        <th>Region</th>
+                        <th>Region Code</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -128,6 +130,8 @@ const ProvinceManager = () => {
                         <tr key={item._id}>
                             <td>{i + 1}</td>
                             <td>{item.name}</td>
+                            <td>{item.region}</td>
+                            <td>{item.regionCode}</td>
                             <td>
                                 <Button variant="outline-info" size="sm" onClick={() => handleEdit(item)}><FaEdit /></Button>{" "}
                                 <Button variant="outline-danger" size="sm" onClick={() => handleDelete(item._id)}><FaTrash /></Button>
