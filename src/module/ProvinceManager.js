@@ -8,14 +8,20 @@ import {
     Col,
     Alert,
     Collapse,
-    Card
+    Card,
 } from "react-bootstrap";
 import { FaPlus, FaEdit, FaTrash, FaMapMarkerAlt } from "react-icons/fa";
 import AppContext from "../provider/Context";
 
 const ProvinceManager = () => {
     const { province } = useContext(AppContext);
-    const { provinces, fetchProvinces, createProvince, updateProvince, deleteProvince } = province;
+    const {
+        provinces,
+        fetchProvinces,
+        createProvince,
+        updateProvince,
+        deleteProvince,
+    } = province;
 
     const [search, setSearch] = useState("");
     const [formData, setFormData] = useState({ name: "" });
@@ -58,12 +64,17 @@ const ProvinceManager = () => {
         }
     };
 
-    const filtered = provinces.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+    const filtered = provinces.filter((p) =>
+        p.name.toLowerCase().includes(search.toLowerCase())
+    );
 
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <h3 className="mb-0"><FaMapMarkerAlt className="me-2 text-success" />Province Manager</h3>
+                <h3 className="mb-0">
+                    <FaMapMarkerAlt className="me-2 text-success" />
+                    Province Manager
+                </h3>
                 <Button
                     variant="success"
                     onClick={() => {
@@ -72,7 +83,13 @@ const ProvinceManager = () => {
                         setFormData({ name: "" });
                     }}
                 >
-                    {showForm ? "Cancel" : <><FaPlus className="me-1" /> Create New Province</>}
+                    {showForm ? (
+                        "Cancel"
+                    ) : (
+                        <>
+                            <FaPlus className="me-1" /> Create New Province
+                        </>
+                    )}
                 </Button>
             </div>
 
@@ -92,7 +109,9 @@ const ProvinceManager = () => {
                                         <Form.Control
                                             placeholder="Province Name"
                                             value={formData.name}
-                                            onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, name: e.target.value })
+                                            }
                                         />
                                     </Col>
                                     <Col md={3}>
@@ -126,19 +145,37 @@ const ProvinceManager = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filtered.length > 0 ? filtered.map((item, i) => (
-                        <tr key={item._id}>
-                            <td>{i + 1}</td>
-                            <td>{item.name}</td>
-                            <td>{item.region}</td>
-                            <td>{item.regionCode}</td>
-                            <td>
-                                <Button variant="outline-info" size="sm" onClick={() => handleEdit(item)}><FaEdit /></Button>{" "}
-                                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(item._id)}><FaTrash /></Button>
+                    {filtered.length > 0 ? (
+                        filtered.map((item, i) => (
+                            <tr key={item._id}>
+                                <td>{i + 1}</td>
+                                <td>{item.name}</td>
+                                <td>{item.region}</td>
+                                <td>{item.regionCode}</td>
+                                <td>
+                                    <Button
+                                        variant="outline-info"
+                                        size="sm"
+                                        onClick={() => handleEdit(item)}
+                                    >
+                                        <FaEdit />
+                                    </Button>{" "}
+                                    <Button
+                                        variant="outline-danger"
+                                        size="sm"
+                                        onClick={() => handleDelete(item._id)}
+                                    >
+                                        <FaTrash />
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="3" className="text-center">
+                                No provinces found.
                             </td>
                         </tr>
-                    )) : (
-                        <tr><td colSpan="3" className="text-center">No provinces found.</td></tr>
                     )}
                 </tbody>
             </Table>

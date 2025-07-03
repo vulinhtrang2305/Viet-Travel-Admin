@@ -36,7 +36,9 @@ function AppProvider({ children }) {
   };
 
   const createCategory = async (name) => {
-    const res = await axios.post("http://localhost:9999/categories/create", { name });
+    const res = await axios.post("http://localhost:9999/categories/create", {
+      name,
+    });
     fetchCategories();
     return res.data;
   };
@@ -56,7 +58,7 @@ function AppProvider({ children }) {
     fetchCategories,
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
   };
 
   // ---------------------- PROVINCE ----------------------
@@ -68,13 +70,19 @@ function AppProvider({ children }) {
   };
 
   const createProvince = async (provinceData) => {
-    const res = await axios.post("http://localhost:9999/provinces/create", provinceData);
+    const res = await axios.post(
+      "http://localhost:9999/provinces/create",
+      provinceData
+    );
     fetchProvinces();
     return res.data;
   };
 
   const updateProvince = async (id, provinceData) => {
-    await axios.put(`http://localhost:9999/provinces/update/${id}`, provinceData);
+    await axios.put(
+      `http://localhost:9999/provinces/update/${id}`,
+      provinceData
+    );
     fetchProvinces();
   };
 
@@ -88,7 +96,7 @@ function AppProvider({ children }) {
     fetchProvinces,
     createProvince,
     updateProvince,
-    deleteProvince
+    deleteProvince,
   };
 
   // ---------------------- SPOT ----------------------
@@ -100,7 +108,10 @@ function AppProvider({ children }) {
   };
 
   const createSpot = async (spotData) => {
-    const res = await axios.post("http://localhost:9999/spots/create", spotData);
+    const res = await axios.post(
+      "http://localhost:9999/spots/create",
+      spotData
+    );
     fetchSpots();
     return res.data;
   };
@@ -120,7 +131,7 @@ function AppProvider({ children }) {
     fetchSpots,
     createSpot,
     updateSpot,
-    deleteSpot
+    deleteSpot,
   };
 
   // ---------------------- REVIEW ----------------------
@@ -132,7 +143,10 @@ function AppProvider({ children }) {
   };
 
   const createReview = async (reviewData) => {
-    const res = await axios.post("http://localhost:9999/reviews/create", reviewData);
+    const res = await axios.post(
+      "http://localhost:9999/reviews/create",
+      reviewData
+    );
     fetchReviews();
     return res.data;
   };
@@ -152,7 +166,7 @@ function AppProvider({ children }) {
     fetchReviews,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
   };
 
   // ---------------------- SUGGEST ----------------------
@@ -164,7 +178,10 @@ function AppProvider({ children }) {
   };
 
   const createSuggest = async (suggestData) => {
-    const res = await axios.post("http://localhost:9999/suggests/create", suggestData);
+    const res = await axios.post(
+      "http://localhost:9999/suggests/create",
+      suggestData
+    );
     fetchSuggests();
     return res.data;
   };
@@ -184,7 +201,7 @@ function AppProvider({ children }) {
     fetchSuggests,
     createSuggest,
     updateSuggest,
-    deleteSuggest
+    deleteSuggest,
   };
 
   // ---------------------- USER ----------------------
@@ -196,7 +213,10 @@ function AppProvider({ children }) {
   };
 
   const createUser = async (userData) => {
-    const res = await axios.post("http://localhost:9999/users/create", userData);
+    const res = await axios.post(
+      "http://localhost:9999/users/create",
+      userData
+    );
     fetchUsers();
     return res.data;
   };
@@ -216,9 +236,8 @@ function AppProvider({ children }) {
     fetchUsers,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
   };
-
 
   // ---------------------- FAVOURITE ----------------------
   const [favourites, setFavourites] = useState([]);
@@ -249,7 +268,7 @@ function AppProvider({ children }) {
     fetchFavourites,
     fetchFavouritesByUser,
     addToFavourite,
-    deleteFavourite
+    deleteFavourite,
   };
 
   // ---------------------- CONTEXT PROVIDER ----------------------
@@ -263,7 +282,7 @@ function AppProvider({ children }) {
         review,
         suggest,
         userFind,
-        favourite 
+        favourite,
       }}
     >
       {children}

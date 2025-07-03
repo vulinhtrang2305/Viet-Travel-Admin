@@ -52,9 +52,7 @@ const FavouriteManager = () => {
     };
 
     const filtered = favourites.filter(
-        (f) =>
-            f.userId.includes(search) ||
-            f.spotId.includes(search)
+        (f) => f.userId.includes(search) || f.spotId.includes(search)
     );
 
     return (
@@ -70,7 +68,13 @@ const FavouriteManager = () => {
                         setFormData({ userId: "", spotId: "" });
                     }}
                 >
-                    {showForm ? "Cancel" : <><FaPlus className="me-1" /> Add Favourite</>}
+                    {showForm ? (
+                        "Cancel"
+                    ) : (
+                        <>
+                            <FaPlus className="me-1" /> Add Favourite
+                        </>
+                    )}
                 </Button>
             </div>
 

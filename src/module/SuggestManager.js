@@ -8,17 +8,28 @@ import {
     Col,
     Alert,
     Collapse,
-    Card
+    Card,
 } from "react-bootstrap";
 import { FaPlus, FaEdit, FaTrash, FaStar, FaLightbulb } from "react-icons/fa";
 import AppContext from "../provider/Context";
 
 const SuggestManager = () => {
     const { suggest } = useContext(AppContext);
-    const { suggests, fetchSuggests, createSuggest, updateSuggest, deleteSuggest } = suggest;
+    const {
+        suggests,
+        fetchSuggests,
+        createSuggest,
+        updateSuggest,
+        deleteSuggest,
+    } = suggest;
 
     const [search, setSearch] = useState("");
-    const [formData, setFormData] = useState({ title: "", description: "", imageUrl: "", spotId: "" });
+    const [formData, setFormData] = useState({
+        title: "",
+        description: "",
+        imageUrl: "",
+        spotId: "",
+    });
     const [editId, setEditId] = useState(null);
     const [message, setMessage] = useState("");
     const [showForm, setShowForm] = useState(false);
@@ -58,21 +69,37 @@ const SuggestManager = () => {
         }
     };
 
-    const filtered = suggests.filter(s => s.title.toLowerCase().includes(search.toLowerCase()));
+    const filtered = suggests.filter((s) =>
+        s.title.toLowerCase().includes(search.toLowerCase())
+    );
 
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <h3 className="mb-0"><FaLightbulb className="me-2 text-warning" />Suggest Manager</h3>
+                <h3 className="mb-0">
+                    <FaLightbulb className="me-2 text-warning" />
+                    Suggest Manager
+                </h3>
                 <Button
                     variant="success"
                     onClick={() => {
                         setShowForm(!showForm);
                         setEditId(null);
-                        setFormData({ title: "", description: "", imageUrl: "", spotId: "" });
+                        setFormData({
+                            title: "",
+                            description: "",
+                            imageUrl: "",
+                            spotId: "",
+                        });
                     }}
                 >
-                    {showForm ? "Cancel" : <><FaPlus className="me-1" /> Create New Suggest</>}
+                    {showForm ? (
+                        "Cancel"
+                    ) : (
+                        <>
+                            <FaPlus className="me-1" /> Create New Suggest
+                        </>
+                    )}
                 </Button>
             </div>
 
@@ -92,28 +119,39 @@ const SuggestManager = () => {
                                         <Form.Control
                                             placeholder="Title"
                                             value={formData.title}
-                                            onChange={e => setFormData({ ...formData, title: e.target.value })}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, title: e.target.value })
+                                            }
                                         />
                                     </Col>
                                     <Col md={6}>
                                         <Form.Control
                                             placeholder="Description"
                                             value={formData.description}
-                                            onChange={e => setFormData({ ...formData, description: e.target.value })}
+                                            onChange={(e) =>
+                                                setFormData({
+                                                    ...formData,
+                                                    description: e.target.value,
+                                                })
+                                            }
                                         />
                                     </Col>
                                     <Col md={6}>
                                         <Form.Control
                                             placeholder="Image URL"
                                             value={formData.imageUrl}
-                                            onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, imageUrl: e.target.value })
+                                            }
                                         />
                                     </Col>
                                     <Col md={6}>
                                         <Form.Control
                                             placeholder="Spot ID"
                                             value={formData.spotId}
-                                            onChange={e => setFormData({ ...formData, spotId: e.target.value })}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, spotId: e.target.value })
+                                            }
                                         />
                                     </Col>
                                     <Col md="auto">
@@ -148,38 +186,63 @@ const SuggestManager = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filtered.length > 0 ? filtered.map((item, i) => (
-                        <tr key={item._id}>
-                            <td>{i + 1}</td>
-                            <td>{item.title}</td>
-                            <td>{item.description}</td>
-                            <td>
-                                {Array.isArray(item.imageUrl) && item.imageUrl.length > 0 ? (
-                                    <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
-                                        {item.imageUrl.map((url, idx) => (
-                                            <img
-                                                key={idx}
-                                                src={url}
-                                                alt={`img-${idx}`}
-                                                style={{ width: 50, height: 40, objectFit: "cover", borderRadius: 4 }}
-                                                onError={(e) => {
-                                                    e.target.onerror = null;
-                                                }}
-                                            />
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <span className="text-muted">No image</span>
-                                )}
-                            </td>
-                            <td>{item.spotId}</td>
-                            <td>
-                                <Button variant="outline-info" size="sm" onClick={() => handleEdit(item)}><FaEdit /></Button>{" "}
-                                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(item._id)}><FaTrash /></Button>
+                    {filtered.length > 0 ? (
+                        filtered.map((item, i) => (
+                            <tr key={item._id}>
+                                <td>{i + 1}</td>
+                                <td>{item.title}</td>
+                                <td>{item.description}</td>
+                                <td>
+                                    {Array.isArray(item.imageUrl) && item.imageUrl.length > 0 ? (
+                                        <div
+                                            style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}
+                                        >
+                                            {item.imageUrl.map((url, idx) => (
+                                                <img
+                                                    key={idx}
+                                                    src={url}
+                                                    alt={`img-${idx}`}
+                                                    style={{
+                                                        width: 50,
+                                                        height: 40,
+                                                        objectFit: "cover",
+                                                        borderRadius: 4,
+                                                    }}
+                                                    onError={(e) => {
+                                                        e.target.onerror = null;
+                                                    }}
+                                                />
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <span className="text-muted">No image</span>
+                                    )}
+                                </td>
+                                <td>{item.spotId}</td>
+                                <td>
+                                    <Button
+                                        variant="outline-info"
+                                        size="sm"
+                                        onClick={() => handleEdit(item)}
+                                    >
+                                        <FaEdit />
+                                    </Button>{" "}
+                                    <Button
+                                        variant="outline-danger"
+                                        size="sm"
+                                        onClick={() => handleDelete(item._id)}
+                                    >
+                                        <FaTrash />
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="6" className="text-center">
+                                No suggests found.
                             </td>
                         </tr>
-                    )) : (
-                        <tr><td colSpan="6" className="text-center">No suggests found.</td></tr>
                     )}
                 </tbody>
             </Table>

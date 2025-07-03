@@ -34,9 +34,7 @@ const AdminDashboard = () => {
     return (
         <div style={{ display: "flex" }}>
             <Sidebar onSelect={setSection} active={section} />
-            <div style={{ flex: 1, padding: "2rem" }}>
-                {renderContent()}
-            </div>
+            <div style={{ flex: 1, padding: "2rem" }}>{renderContent()}</div>
         </div>
     );
 };
