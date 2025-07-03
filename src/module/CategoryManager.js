@@ -8,7 +8,7 @@ import {
     Col,
     Alert,
     Collapse,
-    Card
+    Card,
 } from "react-bootstrap";
 import AppContext from "../provider/Context";
 
