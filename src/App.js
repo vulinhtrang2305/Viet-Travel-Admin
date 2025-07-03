@@ -1,12 +1,11 @@
-import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import HomePage from './components/HomePage'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
   return (
-    <div className='container'>
+    <div className=''>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         {/* <Route path="/tutorials/:id/comments" element={<ListCommnetByTuto />} /> */}
       </Routes>
     </div>
