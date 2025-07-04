@@ -90,6 +90,14 @@ const SpotManager = () => {
         s.name.toLowerCase().includes(search.toLowerCase())
     );
 
+    const getProvince = (provId) => {
+        return province?.provinces?.find((p) => p._id === provId);
+    };
+    
+    const getCategory = (catId) => {
+        return category?.categories?.find((c) => c._id === catId);
+    };
+
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-3">
@@ -308,7 +316,7 @@ const SpotManager = () => {
                     <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th>Province ID</th>
+                        <th>Province</th>
                         <th>Region</th>
                         <th>Type</th>
                         <th>Favorite</th>
@@ -327,7 +335,7 @@ const SpotManager = () => {
                             <tr key={s._id}>
                                 <td>{i + 1}</td>
                                 <td>{s.name}</td>
-                                <td>{s.provinceId}</td>
+                                <td>{getProvince(s?.provinceId)?.name}</td>
                                 <td>{s.region}</td>
                                 <td>{s.type}</td>
                                 <td>{s.isFavorite ? "Yes" : "No"}</td>
@@ -364,7 +372,7 @@ const SpotManager = () => {
                                         ? `${s.location.lat}, ${s.location.lng}`
                                         : "N/A"}
                                 </td>
-                                <td>{s.categoryId}</td>
+                                <td>{getCategory(s.categoryId)?.name}</td>
                                 <td>{s.description}</td>
                                 <td>
                                     <Button
