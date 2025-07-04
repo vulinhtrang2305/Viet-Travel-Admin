@@ -14,7 +14,8 @@ import { FaHeart, FaPlus, FaTrash } from "react-icons/fa";
 import AppContext from "../provider/Context";
 
 const FavouriteManager = () => {
-    const { favourite } = useContext(AppContext);
+    const { favourite, spot } = useContext(AppContext);
+    const { spots, fetchSpots } = spot;
     const {
         favourites,
         fetchFavourites,
@@ -30,6 +31,7 @@ const FavouriteManager = () => {
 
     useEffect(() => {
         fetchFavourites();
+        fetchSpots();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -54,6 +56,14 @@ const FavouriteManager = () => {
     const filtered = favourites.filter(
         (f) => f.userId.includes(search) || f.spotId.includes(search)
     );
+
+    const getSpotNames = (spotIds) => {
+        if (!Array.isArray(spotIds)) return "N/A";
+        return spotIds
+            .map((id) => spots.find((s) => s._id === id)?.name)
+            .filter(Boolean)
+            .join(", ");
+    };
 
     return (
         <div className="container mt-4">
@@ -145,7 +155,7 @@ const FavouriteManager = () => {
                             <tr key={`${item.userId}-${item.spotId}`}>
                                 <td>{idx + 1}</td>
                                 <td>{item.userId}</td>
-                                <td>{item.spotId}</td>
+                                <td>{getSpotNames(item.spotId)}</td>
                                 <td>
                                     <Button
                                         variant="outline-danger"

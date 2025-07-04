@@ -14,7 +14,8 @@ import { FaPlus, FaEdit, FaTrash, FaStar } from "react-icons/fa";
 import AppContext from "../provider/Context";
 
 const ReviewManager = () => {
-    const { review } = useContext(AppContext);
+    const { review, spot } = useContext(AppContext);
+    const { spots } = spot;
     const { reviews, fetchReviews, createReview, updateReview, deleteReview } =
         review;
 
@@ -74,6 +75,11 @@ const ReviewManager = () => {
     const filtered = reviews.filter((r) =>
         r.comment.toLowerCase().includes(search.toLowerCase())
     );
+
+    const getSpot = (spoId) => {
+        return spot?.spots?.find((c) => c._id === spoId);
+    };
+    
 
     return (
         <div className="container mt-4">
@@ -204,7 +210,7 @@ const ReviewManager = () => {
                             <tr key={item._id}>
                                 <td>{i + 1}</td>
                                 <td>{item.userId}</td>
-                                <td>{item.spotId}</td>
+                                <td>{getSpot(item.spotId)?.name}</td>
                                 <td>{item.rating}</td>
                                 <td>{item.comment}</td>
                                 <td>

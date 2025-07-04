@@ -14,7 +14,8 @@ import { FaPlus, FaEdit, FaTrash, FaStar, FaLightbulb } from "react-icons/fa";
 import AppContext from "../provider/Context";
 
 const SuggestManager = () => {
-    const { suggest } = useContext(AppContext);
+    const { suggest, spot } = useContext(AppContext);
+    const { spots, fetchSpots } = spot;
     const {
         suggests,
         fetchSuggests,
@@ -36,6 +37,7 @@ const SuggestManager = () => {
 
     useEffect(() => {
         fetchSuggests();
+        fetchSpots();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -72,6 +74,14 @@ const SuggestManager = () => {
     const filtered = suggests.filter((s) =>
         s.title.toLowerCase().includes(search.toLowerCase())
     );
+
+    const getSpotNames = (spotIds) => {
+        if (!Array.isArray(spotIds)) return "N/A";
+        return spotIds
+            .map((id) => spots.find((s) => s._id === id)?.name)
+            .filter(Boolean)
+            .join(", ");
+      };
 
     return (
         <div className="container mt-4">
@@ -218,7 +228,7 @@ const SuggestManager = () => {
                                         <span className="text-muted">No image</span>
                                     )}
                                 </td>
-                                <td>{item.spotId}</td>
+                                <td>{getSpotNames(item.spotId)}</td>
                                 <td>
                                     <Button
                                         variant="outline-info"
