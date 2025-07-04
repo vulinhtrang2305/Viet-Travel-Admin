@@ -15,7 +15,7 @@ import AppContext from "../provider/Context";
 
 const SuggestManager = () => {
     const { suggest, spot } = useContext(AppContext);
-    const { spots } = spot;
+    const { spots, fetchSpots } = spot;
     const {
         suggests,
         fetchSuggests,
@@ -37,6 +37,7 @@ const SuggestManager = () => {
 
     useEffect(() => {
         fetchSuggests();
+        fetchSpots();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -77,11 +78,10 @@ const SuggestManager = () => {
     const getSpotNames = (spotIds) => {
         if (!Array.isArray(spotIds)) return "N/A";
         return spotIds
-            .map((id) => spot?.spots?.find((s) => s._id === id)?.name)
+            .map((id) => spots.find((s) => s._id === id)?.name)
             .filter(Boolean)
             .join(", ");
-    };
-
+      };
 
     return (
         <div className="container mt-4">
@@ -228,14 +228,7 @@ const SuggestManager = () => {
                                         <span className="text-muted">No image</span>
                                     )}
                                 </td>
-                                <td>
-                                    <ul className="mb-0 ps-3">
-                                        {Array.isArray(item.spotId) && item.spotId.map(id => {
-                                            const found = spot?.spots?.find((s) => s._id === id);
-                                            return found ? <li key={id}>{found.name}</li> : null;
-                                        })}
-                                    </ul>
-                                </td>
+                                <td>{getSpotNames(item.spotId)}</td>
                                 <td>
                                     <Button
                                         variant="outline-info"
