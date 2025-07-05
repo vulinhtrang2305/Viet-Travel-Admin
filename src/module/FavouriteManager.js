@@ -14,7 +14,8 @@ import { FaHeart, FaPlus, FaTrash } from "react-icons/fa";
 import AppContext from "../provider/Context";
 
 const FavouriteManager = () => {
-    const { favourite, spot } = useContext(AppContext);
+    const { favourite, spot, userFind } = useContext(AppContext);
+    const { users, fetchUsers} = userFind;
     const { spots, fetchSpots } = spot;
     const {
         favourites,
@@ -32,6 +33,7 @@ const FavouriteManager = () => {
     useEffect(() => {
         fetchFavourites();
         fetchSpots();
+        fetchUsers();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -64,6 +66,11 @@ const FavouriteManager = () => {
             .filter(Boolean)
             .join(", ");
     };
+
+    const getUserName = (userId) => {
+        const found = users.find((u) => u._id === userId);
+        return found?.username || userId;
+    };    
 
     return (
         <div className="container mt-4">
@@ -155,7 +162,7 @@ const FavouriteManager = () => {
                             filtered.map((item, idx) => (
                                 <tr key={`${item.userId}-${item.spotId}`}>
                                     <td className="text-center fw-bold">{idx + 1}</td>
-                                    <td className="text-break text-muted">{item.userId}</td>
+                                    <td className="text-break text-muted">{getUserName(item.userId)}</td>
                                     <td className="text-break">{getSpotNames(item.spotId)}</td>
                                     <td className="text-center">
                                         <Button
