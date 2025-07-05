@@ -157,17 +157,17 @@ const UserManager = () => {
                 />
             </InputGroup>
 
-            <div className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-                <Table hover responsive className="mb-0">
-                    <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
+            <div className="border border-gray-200 rounded-3xl overflow-hidden shadow-sm bg-white mt-3">
+                <Table hover responsive className="align-middle mb-0">
+                    <thead className="bg-gray-100 text-gray-700 text-sm text-center">
                         <tr>
                             <th className="py-3 px-4">#</th>
-                            <th className="py-3 px-4">Username</th>
-                            <th className="py-3 px-4">Email</th>
+                            <th className="py-3 px-4 text-start">Username</th>
+                            <th className="py-3 px-4 text-start">Email</th>
                             <th className="py-3 px-4">Phone</th>
-                            <th className="py-3 px-4">Address</th>
+                            <th className="py-3 px-4 text-start">Address</th>
                             <th className="py-3 px-4">DOB</th>
-                            <th className="py-3 px-4">Thao tác</th>
+                            <th className="py-3 px-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -175,22 +175,24 @@ const UserManager = () => {
                             filteredUsers.map((user, index) => (
                                 <tr
                                     key={user._id}
-                                    className="hover:bg-gray-50 transition-colors duration-200 text-sm text-gray-800"
+                                    className="text-sm text-gray-800 hover:bg-gray-50 transition duration-150"
                                 >
-                                    <td className="py-3 px-4 font-medium">{index + 1}</td>
-                                    <td className="py-3 px-4">{user.username}</td>
-                                    <td className="py-3 px-4">{user.email}</td>
-                                    <td className="py-3 px-4">{user.phone}</td>
-                                    <td className="py-3 px-4">{user.address}</td>
-                                    <td className="py-3 px-4">
-                                        {user.dob ? user.dob.split("T")[0] : "N/A"}
+                                    <td className="text-center fw-bold">{index + 1}</td>
+                                    <td className="fw-semibold">{user.username}</td>
+                                    <td className="text-muted">{user.email}</td>
+                                    <td className="text-center">{user.phone}</td>
+                                    <td className="text-muted text-break">{user.address || "—"}</td>
+                                    <td className="text-center">
+                                        <span className="badge bg-light text-dark px-2 py-1 rounded-pill">
+                                            {user.dob ? user.dob.split("T")[0] : "N/A"}
+                                        </span>
                                     </td>
-                                    <td className="py-3 px-4">
+                                    <td className="text-center">
                                         <Button
                                             variant="outline-primary"
                                             size="sm"
+                                            className="d-inline-flex align-items-center gap-1"
                                             onClick={() => handleEdit(user)}
-                                            className="d-flex align-items-center gap-1"
                                         >
                                             <FaEdit size={14} />
                                             Sửa
@@ -200,7 +202,7 @@ const UserManager = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={7} className="py-4 px-4 text-center text-gray-500">
+                                <td colSpan={7} className="text-center text-muted py-4 fst-italic">
                                     Không tìm thấy người dùng.
                                 </td>
                             </tr>
