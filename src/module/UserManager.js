@@ -60,7 +60,7 @@ const UserManager = () => {
         }
     };
 
-    const filteredUsers = users.filter((u) =>
+    const filteredUsers = users?.filter((u) =>
         u.username?.toLowerCase().includes(search.toLowerCase())
     );
 
@@ -171,8 +171,8 @@ const UserManager = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredUsers.length > 0 ? (
-                            filteredUsers.map((user, index) => (
+                        {filteredUsers?.length > 0 ? (
+                            filteredUsers?.map((user, index) => (
                                 <tr
                                     key={user._id}
                                     className="text-sm text-gray-800 hover:bg-gray-50 transition duration-150"
