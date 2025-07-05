@@ -152,7 +152,7 @@ const FavouriteManager = () => {
                     <thead className="table-light text-center">
                         <tr>
                             <th style={{ width: '50px' }}>#</th>
-                            <th>User ID</th>
+                            <th>User</th>
                             <th>Spot Name</th>
                             <th style={{ width: '100px' }}>Actions</th>
                         </tr>
@@ -162,7 +162,7 @@ const FavouriteManager = () => {
                             filtered.map((item, idx) => (
                                 <tr key={`${item.userId}-${item.spotId}`}>
                                     <td className="text-center fw-bold">{idx + 1}</td>
-                                    <td className="text-break text-muted">{getUserName(item.userId)}</td>
+                                    <td className="text-center text-muted">{getUserName(item.userId)}</td>
                                     <td className="text-break">{getSpotNames(item.spotId)}</td>
                                     <td className="text-center">
                                         <Button
