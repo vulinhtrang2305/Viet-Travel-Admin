@@ -216,7 +216,7 @@ const ReviewManager = () => {
                             filtered.map((item, i) => (
                                 <tr key={item._id}>
                                     <td className="text-center fw-bold">{i + 1}</td>
-                                    <td className="text-break">{getUserName(item.userId)}</td>
+                                    <td className="text-center">{getUserName(item.userId)}</td>
                                     <td className="text-break">{getSpot(item.spotId)?.name || 'N/A'}</td>
                                     <td className="text-center">
                                         <span className="badge bg-warning text-dark px-2 py-1 d-inline-flex align-items-center gap-1">
