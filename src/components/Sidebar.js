@@ -18,7 +18,7 @@ const Sidebar = ({ onSelect, active }) => {
             {/* Logo */}
             <div className="mb-4 d-flex align-items-center">
                 <img src="/logo192.png" alt="logo" style={{ width: 30, marginRight: 10 }} />
-                <span className="fs-4 fw-bold">Rizz</span>
+                <span className="fs-4 fw-bold">Viet Travel</span>
             </div>
 
             {/* MAIN MENU */}
