@@ -134,51 +134,60 @@ const ProvinceManager = () => {
                 />
             </InputGroup>
 
-            <Table bordered hover responsive className="table-striped">
-                <thead className="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Region</th>
-                        <th>Region Code</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filtered.length > 0 ? (
-                        filtered.map((item, i) => (
-                            <tr key={item._id}>
-                                <td>{i + 1}</td>
-                                <td>{item.name}</td>
-                                <td>{item.region}</td>
-                                <td>{item.regionCode}</td>
-                                <td>
-                                    <Button
-                                        variant="outline-info"
-                                        size="sm"
-                                        onClick={() => handleEdit(item)}
-                                    >
-                                        <FaEdit />
-                                    </Button>{" "}
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={() => handleDelete(item._id)}
-                                    >
-                                        <FaTrash />
-                                    </Button>
+            <div className="border border-gray-200 rounded-4 p-3 shadow-sm bg-white mt-3">
+                <Table responsive hover className="align-middle mb-0">
+                    <thead className="table-light text-center">
+                        <tr>
+                            <th style={{ width: "50px" }}>#</th>
+                            <th className="text-center">Name</th>
+                            <th>Region</th>
+                            <th>Region Code</th>
+                            <th style={{ width: "110px" }}>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filtered.length > 0 ? (
+                            filtered.map((item, i) => (
+                                <tr key={item._id}>
+                                    <td className="text-center fw-bold">{i + 1}</td>
+                                    <td className="text-break text-dark text-center fw-medium">{item.name}</td>
+                                    <td className="text-center">
+                                        <span className="badge bg-info-subtle text-info rounded-pill px-2 py-1">
+                                            {item.region || "—"}
+                                        </span>
+                                    </td>
+                                    <td className="text-center text-muted">{item.regionCode || "—"}</td>
+                                    <td className="text-center">
+                                        <Button
+                                            variant="outline-info"
+                                            size="sm"
+                                            onClick={() => handleEdit(item)}
+                                            className="me-1"
+                                        >
+                                            <FaEdit />
+                                        </Button>
+                                        <Button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            onClick={() => handleDelete(item._id)}
+                                        >
+                                            <FaTrash />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" className="text-center text-muted py-4">
+                                    No provinces found.
                                 </td>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="3" className="text-center">
-                                No provinces found.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </Table>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
+
+
         </div>
     );
 };
