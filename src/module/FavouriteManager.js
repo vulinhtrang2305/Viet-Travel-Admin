@@ -140,42 +140,46 @@ const FavouriteManager = () => {
                 />
             </InputGroup>
 
-            <Table bordered hover responsive className="table-striped">
-                <thead className="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>User ID</th>
-                        <th>Spot ID</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filtered.length > 0 ? (
-                        filtered.map((item, idx) => (
-                            <tr key={`${item.userId}-${item.spotId}`}>
-                                <td>{idx + 1}</td>
-                                <td>{item.userId}</td>
-                                <td>{getSpotNames(item.spotId)}</td>
-                                <td>
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={() => handleDelete(item.userId, item.spotId)}
-                                    >
-                                        <FaTrash />
-                                    </Button>
+            <div className="border border-gray-200 rounded-4 p-3 shadow-sm bg-white mt-3">
+                <Table responsive hover className="align-middle mb-0">
+                    <thead className="table-light text-center">
+                        <tr>
+                            <th style={{ width: '50px' }}>#</th>
+                            <th>User ID</th>
+                            <th>Spot Name</th>
+                            <th style={{ width: '100px' }}>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filtered.length > 0 ? (
+                            filtered.map((item, idx) => (
+                                <tr key={`${item.userId}-${item.spotId}`}>
+                                    <td className="text-center fw-bold">{idx + 1}</td>
+                                    <td className="text-break text-muted">{item.userId}</td>
+                                    <td className="text-break">{getSpotNames(item.spotId)}</td>
+                                    <td className="text-center">
+                                        <Button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            onClick={() => handleDelete(item.userId, item.spotId)}
+                                            className="rounded-circle"
+                                            title="Remove favourite"
+                                        >
+                                            <FaTrash />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={4} className="text-center text-muted py-4">
+                                    No favourites found.
                                 </td>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="4" className="text-center">
-                                No favourites found.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </Table>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
         </div>
     );
 };
