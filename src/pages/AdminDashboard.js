@@ -6,6 +6,7 @@ import ReviewManager from "../module/ReviewManager";
 import SuggestManager from "../module/SuggestManager";
 import CategoryManager from "../module/CategoryManager";
 import FavouriteManager from "../module/FavouriteManager";
+import UserManager from "../module/UserManager";
 
 const AdminDashboard = () => {
     const [section, setSection] = useState("category");
@@ -24,8 +25,8 @@ const AdminDashboard = () => {
                 return <SuggestManager />;
             case "favourite":
                 return <FavouriteManager />;
-            // case "user":
-            //     return <UserManager />;
+            case "user":
+                return <UserManager />;
             default:
                 return <div className="p-4">🔍 Select a section to manage.</div>;
         }

@@ -93,7 +93,7 @@ const SpotManager = () => {
     const getProvince = (provId) => {
         return province?.provinces?.find((p) => p._id === provId);
     };
-    
+
     const getCategory = (catId) => {
         return category?.categories?.find((c) => c._id === catId);
     };
@@ -310,21 +310,21 @@ const SpotManager = () => {
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </InputGroup>
-
-            <Table bordered hover responsive className="table-striped">
-                <thead className="table-light">
+{/* 
+            <Table bordered hover responsive className="table-striped shadow-sm rounded overflow-hidden">
+                <thead className="table-light text-center align-middle">
                     <tr>
                         <th>#</th>
                         <th>Name</th>
                         <th>Province</th>
                         <th>Region</th>
                         <th>Type</th>
-                        <th>Favorite</th>
+                        <th>❤️</th>
                         <th>Images</th>
-                        <th>Region Group</th>
-                        <th>Region Code</th>
+                        <th>Group</th>
+                        <th>Code</th>
                         <th>Location</th>
-                        <th>Category ID</th>
+                        <th>Category</th>
                         <th>Description</th>
                         <th>Actions</th>
                     </tr>
@@ -333,18 +333,32 @@ const SpotManager = () => {
                     {filteredSpots.length > 0 ? (
                         filteredSpots.map((s, i) => (
                             <tr key={s._id}>
-                                <td>{i + 1}</td>
-                                <td>{s.name}</td>
+                                <td className="text-center">{i + 1}</td>
+                                <td className="fw-semibold">{s.name}</td>
                                 <td>{getProvince(s?.provinceId)?.name}</td>
-                                <td>{s.region}</td>
-                                <td>{s.type}</td>
-                                <td>{s.isFavorite ? "Yes" : "No"}</td>
+                                <td>
+                                    <span className="badge bg-info-subtle text-info rounded-pill px-2 py-1">
+                                        {s.region || '—'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span className="badge bg-secondary-subtle text-secondary rounded-pill px-2 py-1">
+                                        {s.type || '—'}
+                                    </span>
+                                </td>
+                                <td className="text-center">
+                                    {s.isFavorite ? (
+                                        <span className="badge bg-danger-subtle text-danger rounded-pill px-2 py-1">
+                                            ❤️
+                                        </span>
+                                    ) : (
+                                        <span className="text-muted">—</span>
+                                    )}
+                                </td>
                                 <td>
                                     {Array.isArray(s.imageUrl) && s.imageUrl.length > 0 ? (
-                                        <div
-                                            style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}
-                                        >
-                                            {s.imageUrl.map((url, idx) => (
+                                        <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
+                                            {s.imageUrl.slice(0, 3).map((url, idx) => (
                                                 <img
                                                     key={idx}
                                                     src={url}
@@ -353,35 +367,52 @@ const SpotManager = () => {
                                                         width: 50,
                                                         height: 40,
                                                         objectFit: "cover",
-                                                        borderRadius: 4,
+                                                        borderRadius: "6px",
+                                                        boxShadow: "0 0 3px rgba(0,0,0,0.1)",
                                                     }}
-                                                    onError={(e) => {
-                                                        e.target.onerror = null;
-                                                    }}
+                                                    onError={(e) => (e.target.onerror = null)}
                                                 />
                                             ))}
+                                            {s.imageUrl.length > 3 && (
+                                                <span className="text-muted small">+{s.imageUrl.length - 3}</span>
+                                            )}
                                         </div>
                                     ) : (
                                         <span className="text-muted">No image</span>
                                     )}
                                 </td>
-                                <td>{s.regionGroup}</td>
-                                <td>{s.regionCode}</td>
+                                <td className="text-center">
+                                    <span className="badge bg-light text-dark rounded-pill px-2 py-1">
+                                        {s.regionGroup || '—'}
+                                    </span>
+                                </td>
+                                <td className="text-center text-muted">{s.regionCode || '—'}</td>
                                 <td>
                                     {s.location && typeof s.location === "object"
                                         ? `${s.location.lat}, ${s.location.lng}`
                                         : "N/A"}
                                 </td>
-                                <td>{getCategory(s.categoryId)?.name}</td>
-                                <td>{s.description}</td>
-                                <td>
+                                <td>{getCategory(s.categoryId)?.name || "—"}</td>
+                                <td
+                                    style={{
+                                        maxWidth: 200,
+                                        whiteSpace: "nowrap",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                    }}
+                                    title={s.description}
+                                >
+                                    {s.description || "—"}
+                                </td>
+                                <td className="text-center">
                                     <Button
                                         variant="outline-info"
                                         size="sm"
                                         onClick={() => handleEdit(s)}
+                                        className="me-1"
                                     >
                                         <FaEdit />
-                                    </Button>{" "}
+                                    </Button>
                                     <Button
                                         variant="outline-danger"
                                         size="sm"
@@ -394,13 +425,139 @@ const SpotManager = () => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="10" className="text-center">
+                            <td colSpan="13" className="text-center text-muted">
                                 No spots found.
                             </td>
                         </tr>
                     )}
                 </tbody>
-            </Table>
+            </Table> */}
+
+            <div className="border border-gray-200 rounded-4 p-3 shadow-sm bg-white mt-3">
+                <Table responsive hover className="align-middle mb-0">
+                    <thead className="table-light text-center align-middle">
+                        <tr>
+                            <th style={{ width: 50 }}>#</th>
+                            <th>Name</th>
+                            <th>Province</th>
+                            <th>Region</th>
+                            <th>Type</th>
+                            <th>❤️</th>
+                            <th>Images</th>
+                            <th>Group</th>
+                            <th>Code</th>
+                            <th>Location</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th style={{ width: 110 }}>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredSpots.length > 0 ? (
+                            filteredSpots.map((s, i) => (
+                                <tr key={s._id}>
+                                    <td className="text-center fw-bold">{i + 1}</td>
+                                    <td className="fw-semibold text-break">{s.name}</td>
+                                    <td>{getProvince(s?.provinceId)?.name || "—"}</td>
+                                    <td className="text-center">
+                                        <span className="badge bg-info-subtle text-info rounded-pill px-2 py-1">
+                                            {s.region || "—"}
+                                        </span>
+                                    </td>
+                                    <td className="text-center">
+                                        <span className="badge bg-secondary-subtle text-secondary rounded-pill px-2 py-1">
+                                            {s.type || "—"}
+                                        </span>
+                                    </td>
+                                    <td className="text-center">
+                                        {s.isFavorite ? (
+                                            <span className="badge bg-danger-subtle text-danger rounded-pill px-2 py-1">❤️</span>
+                                        ) : (
+                                            <span className="text-muted">—</span>
+                                        )}
+                                    </td>
+                                    <td>
+                                        {Array.isArray(s.imageUrl) && s.imageUrl.length > 0 ? (
+                                            <div className="d-flex flex-wrap gap-1">
+                                                {s.imageUrl.slice(0, 4).map((url, idx) => (
+                                                    <img
+                                                        key={idx}
+                                                        src={url}
+                                                        alt={`img-${idx}`}
+                                                        style={{
+                                                            width: 50,
+                                                            height: 40,
+                                                            objectFit: "cover",
+                                                            borderRadius: "6px",
+                                                            border: "1px solid #ccc",
+                                                        }}
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = "/fallback.jpg";
+                                                        }}
+                                                    />
+                                                ))}
+                                                {s.imageUrl.length > 4 && (
+                                                    <span className="text-muted small">+{s.imageUrl.length - 4}</span>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <span className="text-muted fst-italic">No image</span>
+                                        )}
+                                    </td>
+                                    <td className="text-center">
+                                        <span className="badge bg-light text-dark rounded-pill px-2 py-1">
+                                            {s.regionGroup || "—"}
+                                        </span>
+                                    </td>
+                                    <td className="text-center text-muted">{s.regionCode || "—"}</td>
+                                    <td>
+                                        {s.location && typeof s.location === "object"
+                                            ? `${s.location.lat}, ${s.location.lng}`
+                                            : "N/A"}
+                                    </td>
+                                    <td>{getCategory(s.categoryId)?.name || "—"}</td>
+                                    <td
+                                        style={{
+                                            maxWidth: 200,
+                                            whiteSpace: "nowrap",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                        }}
+                                        title={s.description}
+                                    >
+                                        {s.description || "—"}
+                                    </td>
+                                    <td className="text-center">
+                                        <Button
+                                            variant="outline-info"
+                                            size="sm"
+                                            onClick={() => handleEdit(s)}
+                                            className="me-2"
+                                        >
+                                            <FaEdit />
+                                        </Button>
+                                        <Button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            onClick={() => handleDelete(s._id)}
+                                        >
+                                            <FaTrash />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={13} className="text-center text-muted py-4">
+                                    No spots found.
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
+
         </div>
     );
 };

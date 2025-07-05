@@ -14,7 +14,8 @@ import { FaPlus, FaEdit, FaTrash, FaStar } from "react-icons/fa";
 import AppContext from "../provider/Context";
 
 const ReviewManager = () => {
-    const { review, spot } = useContext(AppContext);
+    const { review, spot, userFind } = useContext(AppContext);
+    const { users, fetchUsers } = userFind;
     const { spots } = spot;
     const { reviews, fetchReviews, createReview, updateReview, deleteReview } =
         review;
@@ -33,6 +34,7 @@ const ReviewManager = () => {
 
     useEffect(() => {
         fetchReviews();
+        fetchUsers();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -80,6 +82,10 @@ const ReviewManager = () => {
         return spot?.spots?.find((c) => c._id === spoId);
     };
     
+    const getUserName = (userId) => {
+        const found = users.find((u) => u._id === userId);
+        return found?.username || userId;
+    };    
 
     return (
         <div className="container mt-4">
@@ -192,80 +198,89 @@ const ReviewManager = () => {
                 />
             </InputGroup>
 
-            <Table bordered hover responsive className="table-striped">
-                <thead className="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>User</th>
-                        <th>Spot</th>
-                        <th>Rating</th>
-                        <th>Comment</th>
-                        <th>Image</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filtered.length > 0 ? (
-                        filtered.map((item, i) => (
-                            <tr key={item._id}>
-                                <td>{i + 1}</td>
-                                <td>{item.userId}</td>
-                                <td>{getSpot(item.spotId)?.name}</td>
-                                <td>{item.rating}</td>
-                                <td>{item.comment}</td>
-                                <td>
-                                    {Array.isArray(item.imageUrl) && item.imageUrl.length > 0 ? (
-                                        <div
-                                            style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}
+            <div className="border border-gray-200 rounded-4 p-3 shadow-sm bg-white mt-3">
+                <Table responsive hover className="align-middle mb-0">
+                    <thead className="table-light text-center">
+                        <tr>
+                            <th style={{ width: "50px" }}>#</th>
+                            <th>User</th>
+                            <th>Spot</th>
+                            <th>Rating</th>
+                            <th>Comment</th>
+                            <th>Images</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filtered.length > 0 ? (
+                            filtered.map((item, i) => (
+                                <tr key={item._id}>
+                                    <td className="text-center fw-bold">{i + 1}</td>
+                                    <td className="text-break">{getUserName(item.userId)}</td>
+                                    <td className="text-break">{getSpot(item.spotId)?.name || 'N/A'}</td>
+                                    <td className="text-center">
+                                        <span className="badge bg-warning text-dark px-2 py-1 d-inline-flex align-items-center gap-1">
+                                            ⭐ {item.rating}
+                                        </span>
+                                    </td>
+                                    <td className="text-break" style={{ maxWidth: "300px" }}>
+                                        {item.comment}
+                                    </td>
+                                    <td>
+                                        {Array.isArray(item.imageUrl) && item.imageUrl.length > 0 ? (
+                                            <div className="d-flex flex-wrap gap-1">
+                                                {item.imageUrl.map((url, idx) => (
+                                                    <img
+                                                        key={idx}
+                                                        src={url}
+                                                        alt={`review-img-${idx}`}
+                                                        style={{
+                                                            width: 50,
+                                                            height: 40,
+                                                            objectFit: "cover",
+                                                            borderRadius: 6,
+                                                            border: "1px solid #ccc",
+                                                        }}
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = "/fallback.jpg"; // ảnh fallback nếu lỗi
+                                                        }}
+                                                    />
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <span className="text-muted fst-italic">No image</span>
+                                        )}
+                                    </td>
+                                    <td className="text-center">
+                                        <Button
+                                            variant="outline-info"
+                                            size="sm"
+                                            onClick={() => handleEdit(item)}
+                                            className="me-2"
                                         >
-                                            {item.imageUrl.map((url, idx) => (
-                                                <img
-                                                    key={idx}
-                                                    src={url}
-                                                    alt={`review-img-${idx}`}
-                                                    style={{
-                                                        width: 50,
-                                                        height: 40,
-                                                        objectFit: "cover",
-                                                        borderRadius: 4,
-                                                    }}
-                                                    onError={(e) => {
-                                                        e.target.onerror = null;
-                                                    }}
-                                                />
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <span className="text-muted">No image</span>
-                                    )}
-                                </td>
-                                <td>
-                                    <Button
-                                        variant="outline-info"
-                                        size="sm"
-                                        onClick={() => handleEdit(item)}
-                                    >
-                                        <FaEdit />
-                                    </Button>{" "}
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={() => handleDelete(item._id)}
-                                    >
-                                        <FaTrash />
-                                    </Button>
+                                            <FaEdit />
+                                        </Button>
+                                        <Button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            onClick={() => handleDelete(item._id)}
+                                        >
+                                            <FaTrash />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="7" className="text-center text-muted py-4">
+                                    No reviews found.
                                 </td>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="7" className="text-center">
-                                No reviews found.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </Table>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
         </div>
     );
 };

@@ -136,47 +136,50 @@ const CategoryManager = () => {
                 />
             </InputGroup>
 
-            <Table bordered hover responsive className="table-striped">
-                <thead className="table-light">
-                    <tr>
-                        <th style={{ width: "50px" }}>#</th>
-                        <th>Name</th>
-                        <th style={{ width: "180px" }}>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredCategories.length > 0 ? (
-                        filteredCategories.map((cat, index) => (
-                            <tr key={cat._id}>
-                                <td>{index + 1}</td>
-                                <td>{cat.name}</td>
-                                <td>
-                                    <Button
-                                        variant="outline-info"
-                                        size="sm"
-                                        onClick={() => handleEdit(cat)}
-                                    >
-                                        Edit
-                                    </Button>{" "}
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={() => handleDelete(cat._id)}
-                                    >
-                                        Delete
-                                    </Button>
+            <div className="border border-gray-200 rounded-4 p-3 shadow-sm bg-white mt-3">
+                <Table responsive hover className="align-middle mb-0">
+                    <thead className="table-light text-center">
+                        <tr>
+                            <th style={{ width: "50px" }}>#</th>
+                            <th className="text-center">Name</th>
+                            <th style={{ width: "160px" }}>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredCategories.length > 0 ? (
+                            filteredCategories.map((cat, index) => (
+                                <tr key={cat._id}>
+                                    <td className="text-center fw-bold">{index + 1}</td>
+                                    <td className="text-center text-dark fw-medium">{cat.name}</td>
+                                    <td className="text-center">
+                                        <Button
+                                            variant="outline-info"
+                                            size="sm"
+                                            className="me-2"
+                                            onClick={() => handleEdit(cat)}
+                                        >
+                                            <i className="bi bi-pencil-square me-1"></i>Edit
+                                        </Button>
+                                        <Button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            onClick={() => handleDelete(cat._id)}
+                                        >
+                                            <i className="bi bi-trash3 me-1"></i>Delete
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="3" className="text-center text-muted py-4">
+                                    No categories found.
                                 </td>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="3" className="text-center">
-                                No categories found.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </Table>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
         </div>
     );
 };

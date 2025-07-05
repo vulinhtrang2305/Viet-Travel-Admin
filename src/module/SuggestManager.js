@@ -184,78 +184,84 @@ const SuggestManager = () => {
                 />
             </InputGroup>
 
-            <Table bordered hover responsive className="table-striped">
-                <thead className="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Image</th>
-                        <th>Spot ID</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filtered.length > 0 ? (
-                        filtered.map((item, i) => (
-                            <tr key={item._id}>
-                                <td>{i + 1}</td>
-                                <td>{item.title}</td>
-                                <td>{item.description}</td>
-                                <td>
-                                    {Array.isArray(item.imageUrl) && item.imageUrl.length > 0 ? (
-                                        <div
-                                            style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}
+            <div className="border border-gray-200 rounded-4 p-3 shadow-sm bg-white mt-3">
+                <Table responsive hover className="align-middle mb-0">
+                    <thead className="table-light text-center">
+                        <tr>
+                            <th style={{ width: "50px" }}>#</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Images</th>
+                            <th>Spot</th>
+                            <th style={{ width: "110px" }}>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filtered.length > 0 ? (
+                            filtered.map((item, i) => (
+                                <tr key={item._id}>
+                                    <td className="text-center fw-bold">{i + 1}</td>
+                                    <td className="text-break text-dark">{item.title}</td>
+                                    <td className="text-break text-muted" style={{ maxWidth: "300px" }}>
+                                        {item.description}
+                                    </td>
+                                    <td>
+                                        {Array.isArray(item.imageUrl) && item.imageUrl.length > 0 ? (
+                                            <div className="d-flex flex-wrap gap-1">
+                                                {item.imageUrl.map((url, idx) => (
+                                                    <img
+                                                        key={idx}
+                                                        src={url}
+                                                        alt={`img-${idx}`}
+                                                        style={{
+                                                            width: 50,
+                                                            height: 40,
+                                                            objectFit: "cover",
+                                                            borderRadius: "6px",
+                                                            border: "1px solid #ccc",
+                                                        }}
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = "/fallback.jpg"; // fallback nếu muốn
+                                                        }}
+                                                    />
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <span className="text-muted fst-italic">No image</span>
+                                        )}
+                                    </td>
+                                    <td className="text-break">{getSpotNames(item.spotId)}</td>
+                                    <td className="text-center">
+                                        <Button
+                                            variant="outline-info"
+                                            size="sm"
+                                            onClick={() => handleEdit(item)}
+                                            className="me-2"
                                         >
-                                            {item.imageUrl.map((url, idx) => (
-                                                <img
-                                                    key={idx}
-                                                    src={url}
-                                                    alt={`img-${idx}`}
-                                                    style={{
-                                                        width: 50,
-                                                        height: 40,
-                                                        objectFit: "cover",
-                                                        borderRadius: 4,
-                                                    }}
-                                                    onError={(e) => {
-                                                        e.target.onerror = null;
-                                                    }}
-                                                />
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <span className="text-muted">No image</span>
-                                    )}
-                                </td>
-                                <td>{getSpotNames(item.spotId)}</td>
-                                <td>
-                                    <Button
-                                        variant="outline-info"
-                                        size="sm"
-                                        onClick={() => handleEdit(item)}
-                                    >
-                                        <FaEdit />
-                                    </Button>{" "}
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={() => handleDelete(item._id)}
-                                    >
-                                        <FaTrash />
-                                    </Button>
+                                            <FaEdit />
+                                        </Button>
+                                        <Button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            onClick={() => handleDelete(item._id)}
+                                        >
+                                            <FaTrash />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="6" className="text-center text-muted py-4">
+                                    No suggests found.
                                 </td>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="6" className="text-center">
-                                No suggests found.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </Table>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
+
         </div>
     );
 };
