@@ -14,7 +14,8 @@ import { FaPlus, FaEdit, FaTrash, FaStar } from "react-icons/fa";
 import AppContext from "../provider/Context";
 
 const ReviewManager = () => {
-    const { review, spot } = useContext(AppContext);
+    const { review, spot, userFind } = useContext(AppContext);
+    const { users, fetchUsers } = userFind;
     const { spots } = spot;
     const { reviews, fetchReviews, createReview, updateReview, deleteReview } =
         review;
@@ -33,6 +34,7 @@ const ReviewManager = () => {
 
     useEffect(() => {
         fetchReviews();
+        fetchUsers();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -80,6 +82,10 @@ const ReviewManager = () => {
         return spot?.spots?.find((c) => c._id === spoId);
     };
     
+    const getUserName = (userId) => {
+        const found = users.find((u) => u._id === userId);
+        return found?.username || userId;
+    };    
 
     return (
         <div className="container mt-4">
@@ -210,7 +216,7 @@ const ReviewManager = () => {
                             filtered.map((item, i) => (
                                 <tr key={item._id}>
                                     <td className="text-center fw-bold">{i + 1}</td>
-                                    <td className="text-break">{item.userId}</td>
+                                    <td className="text-break">{getUserName(item.userId)}</td>
                                     <td className="text-break">{getSpot(item.spotId)?.name || 'N/A'}</td>
                                     <td className="text-center">
                                         <span className="badge bg-warning text-dark px-2 py-1 d-inline-flex align-items-center gap-1">
