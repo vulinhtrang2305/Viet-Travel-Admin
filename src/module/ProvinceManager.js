@@ -24,7 +24,11 @@ const ProvinceManager = () => {
     } = province;
 
     const [search, setSearch] = useState("");
-    const [formData, setFormData] = useState({ name: "" });
+    const [formData, setFormData] = useState({
+        name: "",
+        region: "",
+        regionCode: ""
+    });          
     const [editId, setEditId] = useState(null);
     const [message, setMessage] = useState("");
     const [showForm, setShowForm] = useState(false);
@@ -104,22 +108,44 @@ const ProvinceManager = () => {
                     <Card className="mb-3">
                         <Card.Body>
                             <Form onSubmit={handleSubmit}>
-                                <Row className="g-3 align-items-center">
-                                    <Col md={6}>
+                                <Row className="g-3">
+                                    <Col md={4}>
                                         <Form.Control
                                             placeholder="Province Name"
                                             value={formData.name}
                                             onChange={(e) =>
                                                 setFormData({ ...formData, name: e.target.value })
                                             }
+                                            required
+                                        />
+                                    </Col>
+                                    <Col md={4}>
+                                        <Form.Control
+                                            placeholder="Region"
+                                            value={formData.region}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, region: e.target.value })
+                                            }
+                                            required
                                         />
                                     </Col>
                                     <Col md={3}>
+                                        <Form.Control
+                                            placeholder="Region Code"
+                                            value={formData.regionCode}
+                                            onChange={(e) =>
+                                                setFormData({ ...formData, regionCode: e.target.value })
+                                            }
+                                            required
+                                        />
+                                    </Col>
+                                    <Col md="auto">
                                         <Button type="submit" variant="primary">
                                             {editId ? "Update" : "Create"}
                                         </Button>
                                     </Col>
                                 </Row>
+
                             </Form>
                         </Card.Body>
                     </Card>
