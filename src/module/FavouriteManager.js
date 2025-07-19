@@ -15,7 +15,7 @@ import AppContext from "../provider/Context";
 
 const FavouriteManager = () => {
     const { favourite, spot, userFind } = useContext(AppContext);
-    const { users, fetchUsers} = userFind;
+    const { users, fetchUsers } = userFind;
     const { spots, fetchSpots } = spot;
     const {
         favourites,
@@ -70,7 +70,7 @@ const FavouriteManager = () => {
     const getUserName = (userId) => {
         const found = users.find((u) => u._id === userId);
         return found?.username || userId;
-    };    
+    };
 
     return (
         <div className="container mt-4">
@@ -108,24 +108,36 @@ const FavouriteManager = () => {
                             <Form onSubmit={handleSubmit}>
                                 <Row className="g-3">
                                     <Col md={6}>
-                                        <Form.Control
-                                            placeholder="User ID"
+                                        <Form.Select
                                             value={formData.userId}
                                             onChange={(e) =>
                                                 setFormData({ ...formData, userId: e.target.value })
                                             }
                                             required
-                                        />
+                                        >
+                                            <option value="">Select User</option>
+                                            {users.map((user) => (
+                                                <option key={user._id} value={user._id}>
+                                                    {user.username}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
                                     </Col>
                                     <Col md={6}>
-                                        <Form.Control
-                                            placeholder="Spot ID"
+                                        <Form.Select
                                             value={formData.spotId}
                                             onChange={(e) =>
                                                 setFormData({ ...formData, spotId: e.target.value })
                                             }
                                             required
-                                        />
+                                        >
+                                            <option value="">Select Spot</option>
+                                            {spots.map((spot) => (
+                                                <option key={spot._id} value={spot._id}>
+                                                    {spot.name}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
                                     </Col>
                                     <Col md="auto">
                                         <Button type="submit" variant="primary">

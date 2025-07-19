@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import AppContext from "../provider/Context";
+import { uploadImage } from "../components/UploadImage";
 
 const SpotManager = () => {
     const { spot, province, category } = useContext(AppContext);
@@ -36,6 +37,7 @@ const SpotManager = () => {
     const [editId, setEditId] = useState(null);
     const [message, setMessage] = useState("");
     const [showForm, setShowForm] = useState(false);
+    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
         fetchSpots();
@@ -186,18 +188,69 @@ const SpotManager = () => {
                                             }
                                         />
                                     </Col>
+                        
                                     <Col md={6}>
-                                        <Form.Control
-                                            placeholder="Image URLs (comma-separated)"
-                                            value={formData.imageUrl.join(",")}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    imageUrl: e.target.value.split(","),
-                                                })
-                                            }
-                                        />
+                                        <Form.Group>
+                                            <Form.Label>Upload Image</Form.Label>
+                                            <Form.Control
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={async (e) => {
+                                                    const file = e.target.files[0];
+                                                    if (!file) return;
+                                                    setUploading(true);
+                                                    try {
+                                                        const url = await uploadImage(file);
+                                                        setFormData((prev) => ({
+                                                            ...prev,
+                                                            imageUrl: [...prev.imageUrl, url],
+                                                        }));
+                                                        setMessage("✅ Image uploaded.");
+                                                    } catch (err) {
+                                                        console.error("Upload error:", err);
+                                                        setMessage("❌ Upload failed.");
+                                                    } finally {
+                                                        setUploading(false);
+                                                    }
+                                                }}
+                                            />
+                                            {uploading && <div className="small text-muted mt-1">Uploading...</div>}
+                                        </Form.Group>
+
+                                        {formData.imageUrl.length > 0 && (
+                                            <div className="d-flex flex-wrap gap-2 mt-2">
+                                                {formData.imageUrl.map((url, idx) => (
+                                                    <div key={idx} style={{ position: "relative" }}>
+                                                        <img
+                                                            src={url}
+                                                            alt={`preview-${idx}`}
+                                                            style={{ width: 60, height: 50, objectFit: "cover", borderRadius: 4 }}
+                                                        />
+                                                        <Button
+                                                            size="sm"
+                                                            variant="danger"
+                                                            style={{
+                                                                position: "absolute",
+                                                                top: -5,
+                                                                right: -5,
+                                                                borderRadius: "50%",
+                                                                padding: "0 6px",
+                                                            }}
+                                                            onClick={() =>
+                                                                setFormData((prev) => ({
+                                                                    ...prev,
+                                                                    imageUrl: prev.imageUrl.filter((_, i) => i !== idx),
+                                                                }))
+                                                            }
+                                                        >
+                                                            ×
+                                                        </Button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </Col>
+
                                     <Col md={6}>
                                         <Form.Control
                                             placeholder="Description"
@@ -310,128 +363,6 @@ const SpotManager = () => {
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </InputGroup>
-{/* 
-            <Table bordered hover responsive className="table-striped shadow-sm rounded overflow-hidden">
-                <thead className="table-light text-center align-middle">
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Province</th>
-                        <th>Region</th>
-                        <th>Type</th>
-                        <th>❤️</th>
-                        <th>Images</th>
-                        <th>Group</th>
-                        <th>Code</th>
-                        <th>Location</th>
-                        <th>Category</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredSpots.length > 0 ? (
-                        filteredSpots.map((s, i) => (
-                            <tr key={s._id}>
-                                <td className="text-center">{i + 1}</td>
-                                <td className="fw-semibold">{s.name}</td>
-                                <td>{getProvince(s?.provinceId)?.name}</td>
-                                <td>
-                                    <span className="badge bg-info-subtle text-info rounded-pill px-2 py-1">
-                                        {s.region || '—'}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span className="badge bg-secondary-subtle text-secondary rounded-pill px-2 py-1">
-                                        {s.type || '—'}
-                                    </span>
-                                </td>
-                                <td className="text-center">
-                                    {s.isFavorite ? (
-                                        <span className="badge bg-danger-subtle text-danger rounded-pill px-2 py-1">
-                                            ❤️
-                                        </span>
-                                    ) : (
-                                        <span className="text-muted">—</span>
-                                    )}
-                                </td>
-                                <td>
-                                    {Array.isArray(s.imageUrl) && s.imageUrl.length > 0 ? (
-                                        <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
-                                            {s.imageUrl.slice(0, 3).map((url, idx) => (
-                                                <img
-                                                    key={idx}
-                                                    src={url}
-                                                    alt={`img-${idx}`}
-                                                    style={{
-                                                        width: 50,
-                                                        height: 40,
-                                                        objectFit: "cover",
-                                                        borderRadius: "6px",
-                                                        boxShadow: "0 0 3px rgba(0,0,0,0.1)",
-                                                    }}
-                                                    onError={(e) => (e.target.onerror = null)}
-                                                />
-                                            ))}
-                                            {s.imageUrl.length > 3 && (
-                                                <span className="text-muted small">+{s.imageUrl.length - 3}</span>
-                                            )}
-                                        </div>
-                                    ) : (
-                                        <span className="text-muted">No image</span>
-                                    )}
-                                </td>
-                                <td className="text-center">
-                                    <span className="badge bg-light text-dark rounded-pill px-2 py-1">
-                                        {s.regionGroup || '—'}
-                                    </span>
-                                </td>
-                                <td className="text-center text-muted">{s.regionCode || '—'}</td>
-                                <td>
-                                    {s.location && typeof s.location === "object"
-                                        ? `${s.location.lat}, ${s.location.lng}`
-                                        : "N/A"}
-                                </td>
-                                <td>{getCategory(s.categoryId)?.name || "—"}</td>
-                                <td
-                                    style={{
-                                        maxWidth: 200,
-                                        whiteSpace: "nowrap",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                    }}
-                                    title={s.description}
-                                >
-                                    {s.description || "—"}
-                                </td>
-                                <td className="text-center">
-                                    <Button
-                                        variant="outline-info"
-                                        size="sm"
-                                        onClick={() => handleEdit(s)}
-                                        className="me-1"
-                                    >
-                                        <FaEdit />
-                                    </Button>
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={() => handleDelete(s._id)}
-                                    >
-                                        <FaTrash />
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="13" className="text-center text-muted">
-                                No spots found.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </Table> */}
 
             <div className="border border-gray-200 rounded-4 p-3 shadow-sm bg-white mt-3">
                 <Table responsive hover className="align-middle mb-0">

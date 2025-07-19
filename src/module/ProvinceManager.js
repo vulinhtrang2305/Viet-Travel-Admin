@@ -28,7 +28,7 @@ const ProvinceManager = () => {
         name: "",
         region: "",
         regionCode: ""
-    });          
+    });
     const [editId, setEditId] = useState(null);
     const [message, setMessage] = useState("");
     const [showForm, setShowForm] = useState(false);
@@ -47,7 +47,7 @@ const ProvinceManager = () => {
                 await createProvince(formData);
                 setMessage("✅ Province created successfully.");
             }
-            setFormData({ name: "" });
+            setFormData({ name: "", region: "", regionCode: "" });
             setEditId(null);
             setShowForm(false);
         } catch {
@@ -84,7 +84,7 @@ const ProvinceManager = () => {
                     onClick={() => {
                         setShowForm(!showForm);
                         setEditId(null);
-                        setFormData({ name: "" });
+                        setFormData({ name: "", region: "", regionCode: "" });
                     }}
                 >
                     {showForm ? (
@@ -120,24 +120,32 @@ const ProvinceManager = () => {
                                         />
                                     </Col>
                                     <Col md={4}>
-                                        <Form.Control
-                                            placeholder="Region"
+                                        <Form.Select
                                             value={formData.region}
                                             onChange={(e) =>
                                                 setFormData({ ...formData, region: e.target.value })
                                             }
                                             required
-                                        />
+                                        >
+                                            <option value="">Select Region</option>
+                                            <option value="Bắc">Bắc</option>
+                                            <option value="Trung">Trung</option>
+                                            <option value="Nam">Nam</option>
+                                        </Form.Select>
                                     </Col>
                                     <Col md={3}>
-                                        <Form.Control
-                                            placeholder="Region Code"
+                                        <Form.Select
                                             value={formData.regionCode}
                                             onChange={(e) =>
                                                 setFormData({ ...formData, regionCode: e.target.value })
                                             }
                                             required
-                                        />
+                                        >
+                                            <option value="">Select Region Code</option>
+                                            <option value="north">north</option>
+                                            <option value="central">central</option>
+                                            <option value="south">south</option>
+                                        </Form.Select>
                                     </Col>
                                     <Col md="auto">
                                         <Button type="submit" variant="primary">
@@ -212,8 +220,6 @@ const ProvinceManager = () => {
                     </tbody>
                 </Table>
             </div>
-
-
         </div>
     );
 };

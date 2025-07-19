@@ -214,7 +214,7 @@ function AppProvider({ children }) {
 
   const createUser = async (userData) => {
     const res = await axios.post(
-      "http://localhost:9999/users/create",
+      "http://localhost:9999/users/register",
       userData
     );
     fetchUsers();

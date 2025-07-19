@@ -10,12 +10,12 @@ import {
     Collapse,
     Card,
 } from "react-bootstrap";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaPlus } from "react-icons/fa";
 import AppContext from "../provider/Context";
 
 const UserManager = () => {
     const { userFind } = useContext(AppContext);
-    const { users, fetchUsers, updateUser } = userFind;
+    const { users, fetchUsers, updateUser, createUser, deleteUser } = userFind;
 
     const [search, setSearch] = useState("");
     const [showForm, setShowForm] = useState(false);
@@ -27,6 +27,7 @@ const UserManager = () => {
         phone: "",
         address: "",
         dob: "",
+        password: "",
     });
 
     useEffect(() => {
@@ -41,8 +42,16 @@ const UserManager = () => {
             phone: user.phone || "",
             address: user.address || "",
             dob: user.dob ? user.dob.split("T")[0] : "",
+            password: "",
         });
         setShowForm(true);
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm("Bạn có chắc chắn muốn xóa người dùng này?")) {
+            await deleteUser(id);
+            setMessage("🗑️ Đã xóa người dùng.");
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -51,12 +60,16 @@ const UserManager = () => {
             if (editId) {
                 await updateUser(editId, formData);
                 setMessage("✅ Cập nhật người dùng thành công.");
-                setEditId(null);
-                setShowForm(false);
-                await fetchUsers();
+            } else {
+                await createUser(formData);
+                setMessage("✅ Tạo người dùng thành công.");
             }
+            setEditId(null);
+            setFormData({ username: "", email: "", phone: "", address: "", dob: "", password: "" });
+            setShowForm(false);
+            await fetchUsers();
         } catch {
-            setMessage("❌ Cập nhật người dùng thất bại.");
+            setMessage("❌ Thao tác thất bại.");
         }
     };
 
@@ -69,13 +82,14 @@ const UserManager = () => {
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h3 className="mb-0">👥 Quản lý người dùng</h3>
                 <Button
-                    variant="secondary"
+                    variant={showForm ? "secondary" : "success"}
                     onClick={() => {
-                        setShowForm(false);
+                        setShowForm(!showForm);
                         setEditId(null);
+                        setFormData({ username: "", email: "", phone: "", address: "", dob: "", password: "" });
                     }}
                 >
-                    Ẩn biểu mẫu
+                    {showForm ? "Ẩn biểu mẫu" : <><FaPlus className="me-1" /> Thêm người dùng</>}
                 </Button>
             </div>
 
@@ -98,6 +112,7 @@ const UserManager = () => {
                                             onChange={(e) =>
                                                 setFormData({ ...formData, username: e.target.value })
                                             }
+                                            required
                                         />
                                     </Col>
                                     <Col md={6}>
@@ -108,6 +123,7 @@ const UserManager = () => {
                                             onChange={(e) =>
                                                 setFormData({ ...formData, email: e.target.value })
                                             }
+                                            required
                                         />
                                     </Col>
                                     <Col md={6}>
@@ -137,9 +153,22 @@ const UserManager = () => {
                                             }
                                         />
                                     </Col>
+                                    {!editId && (
+                                        <Col md={6}>
+                                            <Form.Control
+                                                type="password"
+                                                placeholder="Mật khẩu"
+                                                value={formData.password}
+                                                onChange={(e) =>
+                                                    setFormData({ ...formData, password: e.target.value })
+                                                }
+                                                required
+                                            />
+                                        </Col>
+                                    )}
                                     <Col md={6}>
                                         <Button type="submit" variant="primary">
-                                            Cập nhật người dùng
+                                            {editId ? "Cập nhật người dùng" : "Tạo người dùng"}
                                         </Button>
                                     </Col>
                                 </Row>
@@ -191,11 +220,17 @@ const UserManager = () => {
                                         <Button
                                             variant="outline-primary"
                                             size="sm"
-                                            className="d-inline-flex align-items-center gap-1"
+                                            className="d-inline-flex align-items-center gap-1 me-2"
                                             onClick={() => handleEdit(user)}
                                         >
-                                            <FaEdit size={14} />
-                                            Sửa
+                                            <FaEdit size={14} /> Sửa
+                                        </Button>
+                                        <Button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            onClick={() => handleDelete(user._id)}
+                                        >
+                                            Xóa
                                         </Button>
                                     </td>
                                 </tr>
@@ -210,7 +245,6 @@ const UserManager = () => {
                     </tbody>
                 </Table>
             </div>
-
         </div>
     );
 };
