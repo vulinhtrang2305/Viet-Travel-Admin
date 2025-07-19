@@ -44,7 +44,7 @@ const SpotManager = () => {
         fetchProvinces();
         fetchCategories();
     }, []);
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -188,21 +188,9 @@ const SpotManager = () => {
                                             }
                                         />
                                     </Col>
-                                    {/* <Col md={6}>
-                                        <Form.Control
-                                            placeholder="Image URLs (comma-separated)"
-                                            value={formData.imageUrl.join(",")}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    imageUrl: e.target.value.split(","),
-                                                })
-                                            }
-                                        />
-                                    </Col> */}
-
-<Col md={6}>
-    <Form.Group>
+                        
+                                    <Col md={6}>
+                                        <Form.Group>
                                             <Form.Label>Upload Image</Form.Label>
                                             <Form.Control
                                                 type="file"
