@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import AppContext from "../provider/Context";
+import { uploadImage } from "../components/UploadImage";
 
 const SpotManager = () => {
     const { spot, province, category } = useContext(AppContext);
@@ -36,13 +37,14 @@ const SpotManager = () => {
     const [editId, setEditId] = useState(null);
     const [message, setMessage] = useState("");
     const [showForm, setShowForm] = useState(false);
+    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
         fetchSpots();
         fetchProvinces();
         fetchCategories();
     }, []);
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -186,7 +188,7 @@ const SpotManager = () => {
                                             }
                                         />
                                     </Col>
-                                    <Col md={6}>
+                                    {/* <Col md={6}>
                                         <Form.Control
                                             placeholder="Image URLs (comma-separated)"
                                             value={formData.imageUrl.join(",")}
@@ -197,7 +199,70 @@ const SpotManager = () => {
                                                 })
                                             }
                                         />
+                                    </Col> */}
+
+<Col md={6}>
+    <Form.Group>
+                                            <Form.Label>Upload Image</Form.Label>
+                                            <Form.Control
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={async (e) => {
+                                                    const file = e.target.files[0];
+                                                    if (!file) return;
+                                                    setUploading(true);
+                                                    try {
+                                                        const url = await uploadImage(file);
+                                                        setFormData((prev) => ({
+                                                            ...prev,
+                                                            imageUrl: [...prev.imageUrl, url],
+                                                        }));
+                                                        setMessage("✅ Image uploaded.");
+                                                    } catch (err) {
+                                                        console.error("Upload error:", err);
+                                                        setMessage("❌ Upload failed.");
+                                                    } finally {
+                                                        setUploading(false);
+                                                    }
+                                                }}
+                                            />
+                                            {uploading && <div className="small text-muted mt-1">Uploading...</div>}
+                                        </Form.Group>
+
+                                        {formData.imageUrl.length > 0 && (
+                                            <div className="d-flex flex-wrap gap-2 mt-2">
+                                                {formData.imageUrl.map((url, idx) => (
+                                                    <div key={idx} style={{ position: "relative" }}>
+                                                        <img
+                                                            src={url}
+                                                            alt={`preview-${idx}`}
+                                                            style={{ width: 60, height: 50, objectFit: "cover", borderRadius: 4 }}
+                                                        />
+                                                        <Button
+                                                            size="sm"
+                                                            variant="danger"
+                                                            style={{
+                                                                position: "absolute",
+                                                                top: -5,
+                                                                right: -5,
+                                                                borderRadius: "50%",
+                                                                padding: "0 6px",
+                                                            }}
+                                                            onClick={() =>
+                                                                setFormData((prev) => ({
+                                                                    ...prev,
+                                                                    imageUrl: prev.imageUrl.filter((_, i) => i !== idx),
+                                                                }))
+                                                            }
+                                                        >
+                                                            ×
+                                                        </Button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </Col>
+
                                     <Col md={6}>
                                         <Form.Control
                                             placeholder="Description"
