@@ -171,13 +171,17 @@ const SpotManager = () => {
                                         </Form.Select>
                                     </Col>
                                     <Col md={6}>
-                                        <Form.Control
-                                            placeholder="Region"
+                                        <Form.Select
                                             value={formData.region}
                                             onChange={(e) =>
                                                 setFormData({ ...formData, region: e.target.value })
                                             }
-                                        />
+                                        >
+                                            <option value="">Chọn miền</option>
+                                            <option value="Bắc">Miền Bắc</option>
+                                            <option value="Trung">Miền Trung</option>
+                                            <option value="Nam">Miền Nam</option>
+                                        </Form.Select>
                                     </Col>
                                     <Col md={6}>
                                         <Form.Control
@@ -188,7 +192,7 @@ const SpotManager = () => {
                                             }
                                         />
                                     </Col>
-                        
+
                                     <Col md={6}>
                                         <Form.Group>
                                             <Form.Label>Upload Image</Form.Label>
@@ -296,16 +300,17 @@ const SpotManager = () => {
                                         />
                                     </Col>
                                     <Col md={3}>
-                                        <Form.Control
-                                            placeholder="Region Group"
+                                        <Form.Select
                                             value={formData.regionGroup}
                                             onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    regionGroup: e.target.value,
-                                                })
+                                                setFormData({ ...formData, regionGroup: e.target.value })
                                             }
-                                        />
+                                        >
+                                            <option value="">Chọn nhóm vùng</option>
+                                            <option value="mien-bac">Miền Bắc</option>
+                                            <option value="mien-trung">Miền Trung</option>
+                                            <option value="mien-nam">Miền Nam</option>
+                                        </Form.Select>
                                     </Col>
                                     <Col md={3}>
                                         <Form.Control
@@ -422,10 +427,10 @@ const SpotManager = () => {
                                                             borderRadius: "6px",
                                                             border: "1px solid #ccc",
                                                         }}
-                                                        onError={(e) => {
-                                                            e.target.onerror = null;
-                                                            e.target.src = "/fallback.jpg";
-                                                        }}
+                                                    // onError={(e) => {
+                                                    //     e.target.onerror = null;
+                                                    //     e.target.src = "/fallback.jpg";
+                                                    // }}
                                                     />
                                                 ))}
                                                 {s.imageUrl.length > 4 && (
